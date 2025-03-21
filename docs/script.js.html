@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: script.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: script.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*************************************************************
+ * ✅ Array principal donde almacenamos los productos
+ *************************************************************/
+let productos = JSON.parse(localStorage.getItem("productos")) || [];
+let indiceEdicion = null; // Índice del producto que se está editando
+
+/**
+ * ✅ Guarda el array de productos en localStorage.
+ */
+function guardarEnLocalStorage() {
+  localStorage.setItem("productos", JSON.stringify(productos));
+}
+
+/**
+ * ✅ Agrega un nuevo producto o edita uno existente.
+ *
+ * @param {string} nombre - Nombre del producto.
+ * @param {number} precio - Precio del producto en euros.
+ * @param {number} cantidad - Cantidad disponible en stock.
+ */
+function guardarProducto(nombre, precio, cantidad) {
+  let producto = { nombre, precio, cantidad };
+
+  if (indiceEdicion === null) {
+    productos.push(producto); // Agregar nuevo producto
+  } else {
+    productos[indiceEdicion] = producto; // Editar producto existente
+    indiceEdicion = null; // Resetear modo edición
+  }
+
+  guardarEnLocalStorage(); // Guardamos en localStorage
+  mostrarProductos(); // Actualizamos la tabla
+  document.getElementById("formulario-producto").reset(); // Limpiamos formulario
+}
+
+/**
+ * ✅ Elimina un producto del inventario.
+ *
+ * @param {number} index - Índice del producto en el array.
+ */
+function eliminarProducto(index) {
+  productos.splice(index, 1); // Eliminamos del array
+  guardarEnLocalStorage(); // Guardamos cambios en localStorage
+  mostrarProductos(); // Actualizamos la tabla
+}
+
+/**
+ * ✅ Carga los datos de un producto en el formulario para su edición.
+ *
+ * @param {number} index - Índice del producto a editar.
+ */
+function editarProducto(index) {
+  let producto = productos[index];
+  document.getElementById("nombre").value = producto.nombre;
+  document.getElementById("precio").value = producto.precio.toFixed(2);
+  document.getElementById("cantidad").value = producto.cantidad;
+  indiceEdicion = index; // Guardamos el índice para edición
+}
+
+/**
+ * ✅ Muestra los productos en la tabla HTML.
+ */
+function mostrarProductos() {
+  let tabla = document.getElementById("tabla-productos");
+  tabla.innerHTML = ""; // Limpiamos la tabla
+
+  productos.forEach((producto, index) => {
+    let fila = `
+            &lt;tr>
+                &lt;td class="p-2">${producto.nombre}&lt;/td>
+                &lt;td class="p-2">${producto.precio.toFixed(2)} €&lt;/td>
+                &lt;td class="p-2">${producto.cantidad}&lt;/td>
+                &lt;td class="p-2 flex gap-2 justify-center">
+                    &lt;button onclick="editarProducto(${index})" class="bg-yellow-500 text-white px-2 py-1 rounded">Editar&lt;/button>
+                    &lt;button onclick="eliminarProducto(${index})" class="bg-red-500 text-white px-2 py-1 rounded">Eliminar&lt;/button>
+                &lt;/td>
+            &lt;/tr>
+        `;
+    tabla.innerHTML += fila;
+  });
+}
+
+/**
+ * ✅ Filtra productos en tiempo real según el texto ingresado en el buscador.
+ */
+
+function filtrarProductos() {
+  let textoBusqueda = document
+    .getElementById("buscar")
+    .value.toLowerCase()
+    .trim();
+  let productosFiltrados = productos.filter((producto) =>
+    producto.nombre.toLowerCase().includes(textoBusqueda)
+  );
+  mostrarProductosFiltrados(productosFiltrados);
+}
+/**
+ * ✅ Muestra en la tabla los productos filtrados.
+ *
+ * @param {Array} productosFiltrados - Array con los productos filtrados.
+ */
+function mostrarProductosFiltrados(productosFiltrados) {
+  let tabla = document.getElementById("tabla-productos");
+  tabla.innerHTML = ""; // Limpiamos la tabla
+
+  productosFiltrados.forEach((producto, index) => {
+    let fila = `
+            &lt;tr>
+                &lt;td class="p-2">${producto.nombre}&lt;/td>
+                &lt;td class="p-2">${producto.precio.toFixed(2)} €&lt;/td>
+                &lt;td class="p-2">${producto.cantidad}&lt;/td>
+                &lt;td class="p-2 flex gap-2 justify-center">
+                    &lt;button onclick="editarProducto(${index})" class="bg-yellow-500 text-white px-2 py-1 rounded">Editar&lt;/button>
+                    &lt;button onclick="eliminarProducto(${index})" class="bg-red-500 text-white px-2 py-1 rounded">Eliminar&lt;/button>
+                &lt;/td>
+            &lt;/tr>
+        `;
+    tabla.innerHTML += fila;
+  });
+}
+
+/**
+ * ✅ Captura el evento "input" en el campo de búsqueda para filtrar productos en tiempo real.
+ */
+document.getElementById("buscar").addEventListener("input", filtrarProductos);
+
+/**
+ * ✅ Captura el evento "submit" del formulario para agregar/editar productos.
+ */
+document
+  .getElementById("formulario-producto")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    let nombre = document.getElementById("nombre").value.trim();
+    let precioTexto = document.getElementById("precio").value.replace(",", ".");
+    let precio = parseFloat(precioTexto);
+    let cantidad = parseInt(document.getElementById("cantidad").value);
+
+    if (
+      nombre === "" ||
+      isNaN(precio) ||
+      isNaN(cantidad) ||
+      precio &lt;= 0 ||
+      cantidad &lt;= 0
+    ) {
+      alert(
+        "Por favor, ingrese valores válidos. Recuerda que el precio puede tener decimales."
+      );
+      return;
+    }
+
+    guardarProducto(nombre, precio, cantidad);
+  });
+
+/**
+ * ✅ Carga los productos almacenados en localStorage al iniciar la página.
+ */
+document.addEventListener("DOMContentLoaded", mostrarProductos);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#editarProducto">editarProducto</a></li><li><a href="global.html#eliminarProducto">eliminarProducto</a></li><li><a href="global.html#filtrarProductos">filtrarProductos</a></li><li><a href="global.html#guardarEnLocalStorage">guardarEnLocalStorage</a></li><li><a href="global.html#guardarProducto">guardarProducto</a></li><li><a href="global.html#mostrarProductos">mostrarProductos</a></li><li><a href="global.html#mostrarProductosFiltrados">mostrarProductosFiltrados</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Fri Mar 21 2025 10:32:36 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

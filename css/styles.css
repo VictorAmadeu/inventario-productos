@@ -1,0 +1,43 @@
+/* ============================================================
+   Estilos personalizados adicionales al uso de Tailwind CSS
+   Archivo: styles.css
+   Proyecto: Gestor de Inventario de Productos
+   Autor: Victor Amadeu
+   ============================================================ */
+
+/* Estilo personalizado para mejorar el scroll */
+body {
+    scroll-behavior: smooth;
+}
+
+/* Mejoramos la legibilidad de los inputs */
+input[type="text"],
+input[type="number"] {
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3b82f6; /* azul Tailwind */
+    box-shadow: 0 0 0 1px #3b82f6;
+}
+
+/* Tabla con bordes más definidos */
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+}
+
+/* Botón hover */
+button:hover {
+    opacity: 0.9;
+}
+
+/* Contenedor principal centrado */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
