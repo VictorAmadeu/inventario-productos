@@ -1,21 +1,21 @@
-# 📦 Gestor de Inventário
+# 📦 Gestión de inventario
 
-Aplicação web simples para gerenciamento eficiente de produtos em estoque.
-
----
-
-## 🚀 Funcionalidades Principais
-
-- **Cadastro de Produtos**
-- **Edição e Remoção de Produtos**
-- **Visualização do Inventário Atualizado**
-- **Controle de Quantidade e Preço**
-- **Pesquisa e Filtro de Produtos**
-- **Pruebas unitárias com Jest**
+Una aplicación web sencilla para gestionar eficazmente los productos en stock.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Funciones principales
+
+- **Registros de productos**
+- **Editar y eliminar productos**
+- **Visualización del Inventario Actualizado**
+- **Control de Cantidad y Precios**
+- **Búsqueda y Filtro de los Productos**
+- **Pruebas unitárias con Jest**
+
+---
+
+## 🛠️ Tecnologías Utilizadas
 
 - HTML5
 - CSS3
@@ -25,14 +25,14 @@ Aplicação web simples para gerenciamento eficiente de produtos em estoque.
 
 ---
 
-## 📂 Estrutura do Projeto
+## 📂 Estructura del Proyecto
 
 ```bash
 gestor_inventario/
-├── frontend/          # Código do Frontend com Vue.js
-├── tests/             # Pasta contendo testes unitários (Jest)
-├── package.json       # Dependências e scripts npm
-└── README.md          # Documentação do projeto
+├── frontend/          # Código del Frontend com Vue.js
+├── tests/             # Carpeta con el contenido testes unitarios (Jest)
+├── package.json       # Dependencias y scripts npm
+└── README.md          # Documentación del Proyecto
 ```
 
 ---
@@ -44,7 +44,7 @@ gestor_inventario/
 
 ---
 
-## 📄 Licença
+## 📄 Licencia
 
-Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este proyecto está sob la licencia MIT. Consulte el arqhivo [LICENSE](LICENSE) para más detalles.
 
